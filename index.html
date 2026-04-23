@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Miami lighting design and LED video wall production for concerts, shows, and events. GrandMA programming, live visual operation, full AV integration. Denieled.">
+<meta property="og:title" content="DENIELED — Live Audiovisual Production">
+<meta property="og:description" content="Lighting design, LED video walls, and live visual operation for concerts, shows, and events. Miami, FL.">
+<meta property="og:url" content="https://denieled.com">
+<title>DENIELED — Live Audiovisual Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f0ede8;
+    --gray: #2a2a2a;
+    --mid: #555;
+    --accent: #c8f000;
+    --muted: #888;
+  }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–black);
+color: var(–white);
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 300;
+font-size: 16px;
+line-height: 1.6;
+cursor: crosshair;
+overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.03’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 1000;
+opacity: 0.4;
+}
+
+/* NAV */
+nav {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 24px 40px;
+mix-blend-mode: difference;
+}
+
+.nav-logo {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px;
+letter-spacing: 0.15em;
+color: var(–white);
+text-decoration: none;
+}
+
+.nav-links {
+display: flex;
+gap: 36px;
+list-style: none;
+}
+
+.nav-links a {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+font-weight: 300;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–white);
+text-decoration: none;
+opacity: 0.6;
+transition: opacity 0.2s;
+}
+
+.nav-links a:hover { opacity: 1; }
+
+/* HERO */
+#hero {
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+padding: 0 40px 60px;
+position: relative;
+overflow: hidden;
+}
+
+.hero-bg {
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse 60% 50% at 70% 40%, rgba(200,240,0,0.04) 0%, transparent 70%),
+radial-gradient(ellipse 40% 60% at 20% 70%, rgba(255,255,255,0.02) 0%, transparent 60%);
+}
+
+.hero-eyebrow {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+font-weight: 300;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 20px;
+opacity: 0;
+animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.hero-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(80px, 15vw, 200px);
+line-height: 0.92;
+letter-spacing: 0.02em;
+color: var(–white);
+opacity: 0;
+animation: fadeUp 0.8s ease forwards 0.4s;
+}
+
+.hero-title span {
+display: block;
+color: transparent;
+-webkit-text-stroke: 1px rgba(240,237,232,0.3);
+}
+
+.hero-sub {
+display: flex;
+align-items: center;
+gap: 40px;
+margin-top: 40px;
+opacity: 0;
+animation: fadeUp 0.8s ease forwards 0.7s;
+}
+
+.hero-desc {
+font-size: 14px;
+font-weight: 300;
+color: var(–muted);
+max-width: 340px;
+line-height: 1.7;
+}
+
+.hero-cta {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+font-weight: 400;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–black);
+background: var(–accent);
+padding: 14px 28px;
+text-decoration: none;
+transition: background 0.2s, transform 0.2s;
+white-space: nowrap;
+}
+
+.hero-cta:hover {
+background: var(–white);
+transform: translateY(-2px);
+}
+
+.hero-scroll {
+position: absolute;
+right: 40px;
+bottom: 60px;
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–muted);
+writing-mode: vertical-rl;
+opacity: 0;
+animation: fadeIn 1s ease forwards 1.2s;
+}
+
+/* TICKER */
+.ticker-wrap {
+overflow: hidden;
+border-top: 1px solid var(–gray);
+border-bottom: 1px solid var(–gray);
+padding: 14px 0;
+background: var(–black);
+}
+
+.ticker {
+display: flex;
+width: max-content;
+animation: ticker 20s linear infinite;
+}
+
+.ticker-item {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+font-weight: 300;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–muted);
+padding: 0 40px;
+white-space: nowrap;
+}
+
+.ticker-item span {
+color: var(–accent);
+margin: 0 12px;
+}
+
+/* SECTIONS */
+section {
+padding: 120px 40px;
+}
+
+.section-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+font-weight: 300;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 60px;
+display: flex;
+align-items: center;
+gap: 16px;
+}
+
+.section-label::after {
+content: ‘’;
+display: block;
+height: 1px;
+width: 60px;
+background: var(–gray);
+}
+
+/* WHAT WE DO */
+#studio {
+border-top: 1px solid var(–gray);
+}
+
+.studio-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: start;
+}
+
+.studio-left h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(48px, 6vw, 88px);
+line-height: 1;
+letter-spacing: 0.02em;
+color: var(–white);
+margin-bottom: 32px;
+}
+
+.studio-left p {
+font-size: 15px;
+font-weight: 300;
+color: var(–muted);
+line-height: 1.8;
+max-width: 420px;
+margin-bottom: 16px;
+}
+
+.studio-right {
+padding-top: 20px;
+}
+
+.service-item {
+padding: 28px 0;
+border-bottom: 1px solid var(–gray);
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 20px;
+transition: padding-left 0.3s ease;
+cursor: default;
+}
+
+.service-item:first-child { border-top: 1px solid var(–gray); }
+
+.service-item:hover { padding-left: 16px; }
+
+.service-num {
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+color: var(–muted);
+padding-top: 4px;
+min-width: 24px;
+}
+
+.service-name {
+font-size: 16px;
+font-weight: 400;
+color: var(–white);
+flex: 1;
+}
+
+.service-desc {
+font-size: 13px;
+font-weight: 300;
+color: var(–muted);
+margin-top: 6px;
+line-height: 1.6;
+}
+
+.service-arrow {
+font-size: 18px;
+color: var(–gray);
+padding-top: 2px;
+transition: color 0.2s, transform 0.2s;
+}
+
+.service-item:hover .service-arrow {
+color: var(–accent);
+transform: translateX(4px);
+}
+
+/* WHO WE WORK WITH */
+#clients {
+border-top: 1px solid var(–gray);
+background: var(–gray);
+}
+
+.clients-intro {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(36px, 4vw, 56px);
+line-height: 1.1;
+letter-spacing: 0.02em;
+color: var(–white);
+max-width: 700px;
+margin-bottom: 60px;
+}
+
+.clients-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 1px;
+background: var(–mid);
+}
+
+.client-box {
+background: var(–gray);
+padding: 32px 28px;
+transition: background 0.2s;
+}
+
+.client-box:hover { background: #333; }
+
+.client-box-title {
+font-size: 14px;
+font-weight: 400;
+color: var(–white);
+margin-bottom: 8px;
+}
+
+.client-box-desc {
+font-size: 12px;
+font-weight: 300;
+color: var(–muted);
+line-height: 1.6;
+}
+
+/* MUSIC */
+#music {
+border-top: 1px solid var(–gray);
+}
+
+.music-inner {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: center;
+}
+
+.music-left h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(48px, 5vw, 72px);
+letter-spacing: 0.02em;
+color: var(–white);
+margin-bottom: 24px;
+line-height: 1;
+}
+
+.music-left p {
+font-size: 14px;
+font-weight: 300;
+color: var(–muted);
+line-height: 1.8;
+margin-bottom: 32px;
+}
+
+.music-links {
+display: flex;
+flex-wrap: wrap;
+gap: 12px;
+}
+
+.music-link {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–white);
+border: 1px solid var(–gray);
+padding: 10px 20px;
+text-decoration: none;
+transition: border-color 0.2s, color 0.2s;
+}
+
+.music-link:hover {
+border-color: var(–accent);
+color: var(–accent);
+}
+
+.music-visual {
+display: flex;
+align-items: center;
+justify-content: center;
+height: 300px;
+border: 1px solid var(–gray);
+position: relative;
+overflow: hidden;
+}
+
+.music-visual-text {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 120px;
+color: transparent;
+-webkit-text-stroke: 1px rgba(200,240,0,0.15);
+letter-spacing: 0.05em;
+user-select: none;
+}
+
+.pulse-ring {
+position: absolute;
+border-radius: 50%;
+border: 1px solid rgba(200,240,0,0.1);
+animation: pulse 3s ease-out infinite;
+}
+
+.pulse-ring:nth-child(2) { width: 100px; height: 100px; animation-delay: 0s; }
+.pulse-ring:nth-child(3) { width: 180px; height: 180px; animation-delay: 0.8s; }
+.pulse-ring:nth-child(4) { width: 260px; height: 260px; animation-delay: 1.6s; }
+
+/* ABOUT */
+#about {
+border-top: 1px solid var(–gray);
+}
+
+.about-inner {
+max-width: 800px;
+}
+
+.about-inner h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(48px, 5vw, 72px);
+letter-spacing: 0.02em;
+color: var(–white);
+margin-bottom: 40px;
+line-height: 1;
+}
+
+.about-body {
+font-size: 18px;
+font-weight: 300;
+color: var(–muted);
+line-height: 1.9;
+margin-bottom: 20px;
+}
+
+.about-body strong {
+color: var(–white);
+font-weight: 400;
+}
+
+.about-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 40px;
+}
+
+.about-tag {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–muted);
+border: 1px solid var(–gray);
+padding: 8px 16px;
+}
+
+/* CONTACT */
+#contact {
+border-top: 1px solid var(–gray);
+background: var(–black);
+}
+
+.contact-inner {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: start;
+}
+
+.contact-left h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(60px, 8vw, 120px);
+line-height: 0.95;
+letter-spacing: 0.02em;
+color: var(–white);
+margin-bottom: 24px;
+}
+
+.contact-left p {
+font-size: 14px;
+font-weight: 300;
+color: var(–muted);
+line-height: 1.8;
+max-width: 360px;
+}
+
+.contact-email {
+display: block;
+font-family: ‘DM Mono’, monospace;
+font-size: 14px;
+color: var(–accent);
+text-decoration: none;
+margin-top: 32px;
+transition: opacity 0.2s;
+}
+
+.contact-email:hover { opacity: 0.7; }
+
+.contact-form {
+display: flex;
+flex-direction: column;
+gap: 20px;
+padding-top: 8px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.form-group label {
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+font-weight: 300;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–muted);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+background: transparent;
+border: 1px solid var(–gray);
+border-radius: 0;
+color: var(–white);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px;
+font-weight: 300;
+padding: 14px 16px;
+outline: none;
+transition: border-color 0.2s;
+appearance: none;
+-webkit-appearance: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+border-color: var(–accent);
+}
+
+.form-group select option { background: #111; }
+
+.form-group textarea {
+resize: vertical;
+min-height: 120px;
+}
+
+.form-submit {
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+font-weight: 400;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–black);
+background: var(–accent);
+border: none;
+padding: 16px 32px;
+cursor: pointer;
+transition: background 0.2s, transform 0.2s;
+align-self: flex-start;
+}
+
+.form-submit:hover {
+background: var(–white);
+transform: translateY(-2px);
+}
+
+/* FOOTER */
+footer {
+border-top: 1px solid var(–gray);
+padding: 40px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+flex-wrap: gap;
+gap: 20px;
+}
+
+.footer-logo {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 18px;
+letter-spacing: 0.15em;
+color: var(–white);
+}
+
+.footer-copy {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+font-weight: 300;
+color: var(–muted);
+letter-spacing: 0.08em;
+}
+
+.footer-links {
+display: flex;
+gap: 24px;
+}
+
+.footer-links a {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+font-weight: 300;
+color: var(–muted);
+text-decoration: none;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(–accent); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+@keyframes ticker {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+
+@keyframes pulse {
+0% { opacity: 0.8; transform: scale(0.3); }
+100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* SCROLL REVEAL */
+.reveal {
+opacity: 0;
+transform: translateY(24px);
+transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+opacity: 1;
+transform: translateY(0);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+nav { padding: 20px 24px; }
+.nav-links { display: none; }
+
+```
+#hero { padding: 0 24px 48px; }
+.hero-scroll { display: none; }
+.hero-sub { flex-direction: column; align-items: flex-start; gap: 24px; }
+
+section { padding: 80px 24px; }
+
+.studio-grid { grid-template-columns: 1fr; gap: 48px; }
+.music-inner { grid-template-columns: 1fr; gap: 48px; }
+.contact-inner { grid-template-columns: 1fr; gap: 48px; }
+
+footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
+```
+
+}
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+
+<nav>
+  <a href="#hero" class="nav-logo">DENIELED</a>
+  <ul class="nav-links">
+    <li><a href="#studio">Studio</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">Miami · Live Audiovisual Production</div>
+  <h1 class="hero-title">
+    DENIELED
+    <span>LIGHT.</span>
+  </h1>
+  <div class="hero-sub">
+    <p class="hero-desc">Lighting design, LED video walls, and live visual operation for concerts, shows, festivals, and events.</p>
+    <a href="#contact" class="hero-cta">Start a project →</a>
+  </div>
+  <span class="hero-scroll">Scroll to explore</span>
+</section>
+
+<!-- TICKER -->
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Lighting Design <span>·</span></span>
+    <span class="ticker-item">LED Video Walls <span>·</span></span>
+    <span class="ticker-item">Live Show Operation <span>·</span></span>
+    <span class="ticker-item">GrandMA Programming <span>·</span></span>
+    <span class="ticker-item">DMX Programming <span>·</span></span>
+    <span class="ticker-item">VJ / Visual Operation <span>·</span></span>
+    <span class="ticker-item">Concert Production <span>·</span></span>
+    <span class="ticker-item">Festival Lighting <span>·</span></span>
+    <span class="ticker-item">Miami FL <span>·</span></span>
+    <span class="ticker-item">Lighting Design <span>·</span></span>
+    <span class="ticker-item">LED Video Walls <span>·</span></span>
+    <span class="ticker-item">Live Show Operation <span>·</span></span>
+    <span class="ticker-item">GrandMA Programming <span>·</span></span>
+    <span class="ticker-item">DMX Programming <span>·</span></span>
+    <span class="ticker-item">VJ / Visual Operation <span>·</span></span>
+    <span class="ticker-item">Concert Production <span>·</span></span>
+    <span class="ticker-item">Festival Lighting <span>·</span></span>
+    <span class="ticker-item">Miami FL <span>·</span></span>
+  </div>
+</div>
+
+<!-- STUDIO -->
+
+<section id="studio">
+  <div class="section-label">What we do</div>
+  <div class="studio-grid">
+    <div class="studio-left reveal">
+      <h2>Full Visual Layer.<br>Zero Compromise.</h2>
+      <p>Denieled handles the complete audiovisual layer of your production — from design and programming to live operation. One company, one point of contact, total control of what the audience sees.</p>
+      <p>We work with producers, creative directors, event planners, and venues across Miami and nationally.</p>
+    </div>
+    <div class="studio-right reveal">
+      <div class="service-item">
+        <span class="service-num">01</span>
+        <div>
+          <div class="service-name">Lighting Design & Programming</div>
+          <div class="service-desc">GrandMA3, DMX, busking, timecode. Designed for your show, operated live.</div>
+        </div>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">02</span>
+        <div>
+          <div class="service-name">LED Video Wall Integration</div>
+          <div class="service-desc">Installation, content management, and real-time visual operation synchronized with lighting.</div>
+        </div>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">03</span>
+        <div>
+          <div class="service-name">Live Visual Operation</div>
+          <div class="service-desc">VJ, Resolume, beat-synced visuals. The show breathes with the music.</div>
+        </div>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">04</span>
+        <div>
+          <div class="service-name">Event Technical Direction</div>
+          <div class="service-desc">Full production oversight — crew coordination, venue liaison, flawless execution.</div>
+        </div>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">05</span>
+        <div>
+          <div class="service-name">Programmed Event Lighting</div>
+          <div class="service-desc">DMX-programmed uplighting and atmosphere for weddings and private events. Not static — designed and operated.</div>
+        </div>
+        <span class="service-arrow">→</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+
+<section id="clients">
+  <div class="section-label">Who we work with</div>
+  <p class="clients-intro reveal">We make you look good. You take the credit.</p>
+  <div class="clients-grid reveal">
+    <div class="client-box">
+      <div class="client-box-title">Event & Wedding Planners</div>
+      <div class="client-box-desc">You coordinate the event. We handle everything your client sees — lights, screens, visuals.</div>
+    </div>
+    <div class="client-box">
+      <div class="client-box-title">Producers & Art Directors</div>
+      <div class="client-box-desc">Fashion shows, music videos, brand activations. Your creative vision, our technical precision.</div>
+    </div>
+    <div class="client-box">
+      <div class="client-box-title">Venues & Clubs</div>
+      <div class="client-box-desc">Recurring technical partner for your events. Reliable, professional, every time.</div>
+    </div>
+    <div class="client-box">
+      <div class="client-box-title">Artists & Touring Acts</div>
+      <div class="client-box-desc">Lighting direction and live visual operation for artists who want more than a generic show.</div>
+    </div>
+    <div class="client-box">
+      <div class="client-box-title">Lighting Designers & Directors</div>
+      <div class="client-box-desc">Need a trusted programmer or operator for a large show? We integrate into your team.</div>
+    </div>
+    <div class="client-box">
+      <div class="client-box-title">Production Companies</div>
+      <div class="client-box-desc">Subcontract the full lighting department. One line item, complete execution.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MUSIC -->
+
+<section id="music">
+  <div class="section-label">Music</div>
+  <div class="music-inner">
+    <div class="music-left reveal">
+      <h2>Sound as Extension.</h2>
+      <p>Music released under Denieled is an extension of the same exploration — light, sound, and technology as a unified experience. Not a separate project. The same world, in audio.</p>
+      <div class="music-links">
+        <a href="https://open.spotify.com" target="_blank" class="music-link">Spotify</a>
+        <a href="https://music.apple.com" target="_blank" class="music-link">Apple Music</a>
+        <a href="https://soundcloud.com" target="_blank" class="music-link">SoundCloud</a>
+      </div>
+    </div>
+    <div class="music-visual reveal">
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <div class="music-visual-text">♩</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-inner reveal">
+    <h2>One Identity.</h2>
+    <p class="about-body">
+      <strong>Denieled is a Miami-based live audiovisual production company.</strong> We design, program, and operate lighting and LED video wall systems for concerts, shows, festivals, and events — integrating light, visuals, and music into a single cohesive experience.
+    </p>
+    <p class="about-body">
+      Not purely a studio. Not purely an artist. A single creative identity expressed across live production, technical execution, and sound. From GrandMA programming to real-time VJ operation, <strong>we handle the full visual layer of your production.</strong>
+    </p>
+    <p class="about-body">
+      Based in Miami. Available nationally.
+    </p>
+    <div class="about-tags">
+      <span class="about-tag">Miami, FL</span>
+      <span class="about-tag">Lighting Design</span>
+      <span class="about-tag">LED Video Walls</span>
+      <span class="about-tag">GrandMA3</span>
+      <span class="about-tag">Resolume</span>
+      <span class="about-tag">Live Production</span>
+      <span class="about-tag">DMX Programming</span>
+      <span class="about-tag">VJ</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <h2>LET'S TALK.</h2>
+      <p>For event production, lighting, LED walls, touring, or any collaboration — tell us about your project. We respond within a few hours.</p>
+      <a href="mailto:info@denieled.com" class="contact-email">info@denieled.com →</a>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-group">
+        <label>Your name</label>
+        <input type="text" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="email@example.com">
+      </div>
+      <div class="form-group">
+        <label>Project type</label>
+        <select>
+          <option value="" disabled selected>Select one</option>
+          <option>Concert / Festival</option>
+          <option>Corporate Event</option>
+          <option>Wedding / Private Event</option>
+          <option>Fashion Show</option>
+          <option>Music Video</option>
+          <option>Venue / Club</option>
+          <option>Touring</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell us about your project</label>
+        <textarea placeholder="Event date, venue, what you need..."></textarea>
+      </div>
+      <button class="form-submit" onclick="handleSubmit()">Send message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <span class="footer-logo">DENIELED</span>
+  <div class="footer-links">
+    <a href="https://instagram.com/denieled" target="_blank">Instagram</a>
+    <a href="https://linkedin.com/company/denieled" target="_blank">LinkedIn</a>
+    <a href="mailto:info@denieled.com">Email</a>
+  </div>
+  <span class="footer-copy">© 2026 Denieled Inc. Miami, FL</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submit placeholder
+  function handleSubmit() {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Message sent ✓';
+    btn.style.background = '#f0ede8';
+    btn.disabled = true;
+  }
+</script>
+
+</body>
+</html>
